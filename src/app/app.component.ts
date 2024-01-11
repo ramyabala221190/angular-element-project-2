@@ -9,11 +9,17 @@ export class AppComponent {
   title = 'elements-app-2';
   @ViewChild('testElement')testElement:ElementRef | undefined;
 
+  private unlistenToEvent!: () => void;
+
   constructor(private renderer:Renderer2){}
 
   ngAfterViewInit(){
-    this.renderer.listen(this.testElement?.nativeElement,'computed',(event)=>{
+    this.unlistenToEvent=this.renderer.listen(this.testElement?.nativeElement,'computed',(event)=>{
       console.log(event)
     })
+  }
+
+  ngOnDestroy(){
+    this.unlistenToEvent();
   }
 }
